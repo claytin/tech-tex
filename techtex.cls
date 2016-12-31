@@ -4,7 +4,7 @@
 %% Custom options
 %  font size
 \DeclareOption{12pt}{
-     \PassOptionsToClass{\CurrentOption}{book}
+     \PassOptionsToClass{\CurrentOption}{article}
 }
 
 %  font families
@@ -18,6 +18,19 @@
      \renewcommand{\familydefault}{\sfdefault}
 }
 
+%  languages
+\newif\if@brazil\@brazilfalse
+\DeclareOption{brazil}{
+     \@braziltrue
+     \PassOptionsToClass{\CurrentOption}{article}
+}
+
+\newif\if@german\@germanfalse
+\DeclareOption{german}{
+     \@germantrue
+     \PassOptionsToClass{\CurrentOption}{article}
+}
+
 %% Default options
 \ExecuteOptions{12pt}
 
@@ -25,6 +38,15 @@
 \ProcessOptions\relax
 
 %% Load basic class
-\LoadClass[a4paper]{book}
+\LoadClass[a4paper]{article}
+
+%  seting babel based on language option
+\if@brazil
+     \RequirePackage[brazil]{babel}
+\fi
+
+\if@german
+     \RequirePackage[ngerman]{babel}
+\fi
 
 \endinput
