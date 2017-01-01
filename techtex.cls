@@ -41,6 +41,8 @@
 \LoadClass[a4paper]{article}
 
 %% Needed packages
+\RequirePackage{fancyhdr} % for the customizations of footers
+\pagestyle{fancy}
 
 %% Language shenanigans
 %  setting babel based on language option
@@ -51,6 +53,19 @@
 \if@german
      \RequirePackage[ngerman]{babel}
 \fi
+
+%% Document layout
+%  margins
+\RequirePackage[left=30mm,
+                top=30mm,
+                right=25mm,
+                bottom=25mm]{geometry}
+
+%  page numbering on the right
+\fancyhf{}                         % clear header and footer content
+\renewcommand{\headrulewidth}{0pt} % gets rid of the stupid rule on header
+\fancyfootoffset{0pt}              % grant number on the far right
+\fancyfoot[R]{\thepage}            % print page number on the right
 
 %% Custom commands
 %  creates an unnumbered section and add it to the TOC;
@@ -81,9 +96,9 @@
      \subsubsection*{#1}
 }
 
-%  new wnvironment, description
+%  new environment, description
 \newenvironment{tdescription}
-     {\noindent\ignorespaces%
+     {\noindent%
       \centering
       \begin{minipage}{.8\textwidth}%
            \small}
@@ -96,6 +111,19 @@
      \begin{tdescription}#1\end{tdescription}
 }
 
+%  provide email command
+%  the email addres will be added, when given to the title
+\newcommand{\email}[1]{\def\@email{#1}} % just "assign" the given address
+
 %% Redefinitions
+%  stop wasting space before doc title, and some stylish changes
+\renewcommand{\maketitle}{
+     \vspace{-1,5cm}
+     {\huge \raggedright\@title}\par\noindent
+     \medskip\par\noindent
+     {\large \@author\hfill\@date}\par
+     {\raggedright\texttt{\@email}}\par
+     \vspace{1cm}
+}
 
 \endinput
