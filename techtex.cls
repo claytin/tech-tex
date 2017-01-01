@@ -42,7 +42,8 @@
 
 %% Needed packages
 
-%  seting babel based on language option
+%% Language shenanigans
+%  setting babel based on language option
 \if@brazil
      \RequirePackage[brazil]{babel}
 \fi
@@ -51,7 +52,7 @@
      \RequirePackage[ngerman]{babel}
 \fi
 
-%% Custom command
+%% Custom commands
 %  creates an unnumbered section and add it to the TOC;
 %  the section title is followed by a line
 \newcounter{tsecounter}
@@ -65,10 +66,36 @@
 \newcounter{tsubsecounter}[tsecounter]
 \newcommand{\tsubsection}[1]{
      \refstepcounter{tsubsecounter}
-     \addcontentsline{toc}{subsection}{\numberline{\thetsecounter.\thetsubsecounter} #1}
+     \addcontentsline{toc}{subsection}
+          {\numberline{\thetsecounter.\thetsubsecounter} #1}
      \subsection*{#1}
 }
 
-%% Style
+%  subsubsections
+%　this is the last level
+\newcounter{tssubsecounter}[tsubsecounter]
+\newcommand{\tsubsubsection}[1]{
+     \refstepcounter{tssubsecounter}
+     \addcontentsline{toc}{subsubsection}
+          {\numberline{\thetsecounter.\thetsubsecounter.\thetssubsecounter} #1}
+     \subsubsection*{#1}
+}
+
+%  new wnvironment, description
+\newenvironment{tdescription}
+     {\noindent\ignorespaces%
+      \centering
+      \begin{minipage}{.8\textwidth}%
+           \small}
+     {\end{minipage}%
+      \par\noindent%
+      \ignorespacesafterend}
+
+%  command correspondent to the tdescription environment
+\newcommand{\tdesc}[1]{
+     \begin{tdescription}#1\end{tdescription}
+}
+
+%% Redefinitions
 
 \endinput
