@@ -40,6 +40,8 @@
 %% Load basic class
 \LoadClass[a4paper]{article}
 
+%% Needed packages
+
 %  seting babel based on language option
 \if@brazil
      \RequirePackage[brazil]{babel}
@@ -48,5 +50,25 @@
 \if@german
      \RequirePackage[ngerman]{babel}
 \fi
+
+%% Custom command
+%  creates an unnumbered section and add it to the TOC;
+%  the section title is followed by a line
+\newcounter{tsecounter}
+\newcommand{\tsection}[1]{
+     \refstepcounter{tsecounter}
+     \addcontentsline{toc}{section}{\numberline{\thetsecounter} #1}
+     \section*{#1\\[-5mm]\rule{\textwidth}{.4pt}}
+}
+
+%  unnumbered subsections
+\newcounter{tsubsecounter}[tsecounter]
+\newcommand{\tsubsection}[1]{
+     \refstepcounter{tsubsecounter}
+     \addcontentsline{toc}{subsection}{\numberline{\thetsecounter.\thetsubsecounter} #1}
+     \subsection*{#1}
+}
+
+%% Style
 
 \endinput
