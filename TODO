@@ -1,2 +1,4 @@
 - add english language option, and set it as default
 - remove doted lines from toc
+- modify maketitle so that it allow multiple authors and emails
+- add special section for authors/contributors and contact their contact info
