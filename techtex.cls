@@ -111,19 +111,15 @@
      \begin{tdescription}#1\end{tdescription}
 }
 
-%  provide email command
-%  the email addres will be added, when given to the title
-\newcommand{\email}[1]{\def\@email{#1}} % just "assign" the given address
-
 %% Redefinitions
 %  stop wasting space before doc title, and some stylish changes
 \renewcommand{\maketitle}{
      \vspace{-1,5cm}
-     {\huge \raggedright\@title}\par\noindent
-     \medskip\par\noindent
-     {\large \@author\hfill\@date}\par
-     {\raggedright\texttt{\@email}}\par
-     \vspace{1cm}
+     {\LARGE \raggedright\@title}\par\noindent
+     \vskip .5cm\par\noindent
+     {\centering \normalsize \@date \par}
+     \vskip .8cm
+     \global\let\@title\@empty
 }
 
 \endinput
