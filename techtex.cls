@@ -1,5 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
-\ProvidesPackage{techtex}[2016/12/31 Tech-Tex]
+\ProvidesPackage{techtex}[2016/12/31 v.00 Tech-Tex]
 
 %% Custom options
 %  font size
@@ -7,15 +7,19 @@
      \PassOptionsToClass{\CurrentOption}{article}
 }
 
-%  font families
+\DeclareOption{11pt}{
+     \PassOptionsToClass{\CurrentOption}{article}
+}
+
+%  default font
 \DeclareOption{roman}{
      \renewcommand*\sfdefault{ptm} % Times
      \renewcommand{\familydefault}{\rmdefault}
 }
 
+\newif\if@sansserif\@sansseriffalse
 \DeclareOption{sansserif}{
-     \renewcommand*\sfdefault{phv} % Helvetica
-     \renewcommand{\familydefault}{\sfdefault}
+     \@sansseriftrue
 }
 
 %  languages
@@ -31,9 +35,6 @@
      \PassOptionsToClass{\CurrentOption}{article}
 }
 
-%% Default options
-\ExecuteOptions{12pt}
-
 %% Execute given options
 \ProcessOptions\relax
 
@@ -41,8 +42,27 @@
 \LoadClass[a4paper]{article}
 
 %% Needed packages
-\RequirePackage{fancyhdr} % for the customizations of footers
+%  customizations of footers
+\RequirePackage{fancyhdr}
 \pagestyle{fancy}
+
+%  toc customization
+%  the titles option helps the compatibility with fancyhdr package
+\RequirePackage{tocstyle}
+\usetocstyle{standard}
+\RequirePackage[titles]{tocloft}
+
+%  font shenanigans
+%  dunno
+\RequirePackage[T1]{fontenc}
+
+%  if sansserif is set as default font family
+\if@sansserif
+     \RequirePackage[default]{opensans}
+\fi
+
+%  set AnonymousPro as ttdefault font
+\RequirePackage[ttdefault=true]{AnonymousPro}
 
 %% Language shenanigans
 %  setting babel based on language option
@@ -61,11 +81,39 @@
                 right=25mm,
                 bottom=25mm]{geometry}
 
-%  page numbering on the right
+%  page numbering on the bottom right
 \fancyhf{}                         % clear header and footer content
 \renewcommand{\headrulewidth}{0pt} % gets rid of the stupid rule on header
 \fancyfootoffset{0pt}              % grant number on the far right
-\fancyfoot[R]{\thepage}            % print page number on the right
+\fancyfoot[R]{\thepage}            % print page number where it should
+
+%  toc changes
+%  no title on toc
+\addto\captionsenglish{\renewcommand{\contentsname}{}}
+\addto\captionsbrazil{\renewcommand{\contentsname}{}}
+\addto\captionsngerman{\renewcommand{\contentsname}{}}
+
+\renewcommand{\tableofcontents}{
+     \vspace{-0.5cm}
+     \@starttoc{toc}
+}
+
+%  no page numbers after sections
+\addtocontents{toc}{\cftpagenumbersoff{sec}}
+
+%  page numbers right after ?section names; the leader commands also grant no
+%  doted lines
+\renewcommand{\cftsecleader}{}
+%\renewcommand{\cftsubsecleader}{}
+%\renewcommand{\cftsubsubsecleader}{}
+%\renewcommand{\cftsecafterpnum}{\cftparfillskip}
+%\renewcommand{\cftsubsecafterpnum}{\cftparfillskip}
+%\renewcommand{\cftsubsubsecafterpnum}{\cftparfillskip}
+%\renewcommand{\cftpnumalign}{r}
+
+%  diferent font for page numbers
+%\renewcommand{\cftsubsecpagefont}{\ttfamily}
+%\renewcommand{\cftsubsubsecpagefont}{\ttfamily}
 
 %% Custom commands
 %  creates an unnumbered section and add it to the TOC;
@@ -81,9 +129,9 @@
 \newcounter{tsubsecounter}[tsecounter]
 \newcommand{\tsubsection}[1]{
      \refstepcounter{tsubsecounter}
+     \subsection*{#1}
      \addcontentsline{toc}{subsection}
           {\numberline{\thetsecounter.\thetsubsecounter} #1}
-     \subsection*{#1}
 }
 
 %  subsubsections
@@ -91,9 +139,9 @@
 \newcounter{tssubsecounter}[tsubsecounter]
 \newcommand{\tsubsubsection}[1]{
      \refstepcounter{tssubsecounter}
+     \subsubsection*{#1}
      \addcontentsline{toc}{subsubsection}
           {\numberline{\thetsecounter.\thetsubsecounter.\thetssubsecounter} #1}
-     \subsubsection*{#1}
 }
 
 %  new environment, description
@@ -113,6 +161,7 @@
 
 %% Redefinitions
 %  stop wasting space before doc title, and some stylish changes
+%  it's just a huge simplificantion
 \renewcommand{\maketitle}{
      \vspace{-1,5cm}
      {\LARGE \raggedright\@title}\par\noindent
