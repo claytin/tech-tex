@@ -2,3 +2,4 @@
 - remove doted lines from toc
 - modify maketitle so that it allow multiple authors and emails
 - add special section for authors/contributors and contact their contact info
+- find a good way of handling default options
